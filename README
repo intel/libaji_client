@@ -1,0 +1,144 @@
+====================================
+Advanced JTAG Interface (AJI) Client
+====================================
+
+In this repository you will find a Client-side
+API implementation for accessing the JTAG 
+server (jtagserv.exe or jtagd)
+distributed by Quartus software from Intel.
+Only JTAG interface supported. 
+
+By default, it will attempt to connect
+to the JTAG server on port 1309. See
+store/examples/QUARTUS_JTAG_CLIENT_CONFIG.conf
+if you need to connect to a remote server
+
+========
+Building
+========
+```
+./bootstrap
+./configure
+./make 
+./make install
+```
+
+=======
+Example
+=======
+The following code, written with Arria10 in mind, will 
+printout the IDCODE for each TAP and show any SLD hierarchy 
+on the FPGA Tap(if available).
+
+```
+#include "aji.h"
+void sld_node_printf(const AJI_HIER_ID* hier_id, const AJI_HUB_INFO* hub_infos);
+
+void main() {
+    DWORD hardware_capacity = 10;
+    AJI_HARDWARE *hardware_list = (AJI_HARDWARE*) calloc(hardware_capacity, sizeof(AJI_HARDWARE));
+    char **server_version_info_list = (char**) calloc(hardware_capacity, sizeof(char*));
+    DWORD hardware_count = hardware_capacity;
+    aji_get_hardware2(&hardware_count, hardware_list, server_version_info_list, 1000);
+ 
+    for(unsigned int i=0; i<hardware_count; ++i) {
+        AJI_HARDWARE hw = hardware_list[i];
+        printf("    (%u) device_name=%s hw_name=%s server=%s port=%s chain_id=%p persistent_id=%lu, chain_type=%d, features=%lu, server_version_info_list=%s", 
+               i+1, hw.device_name, hw.hw_name, hw.server, hw.port,  hw.chain_id, (unsigned long) hw.persistent_id, hw.chain_type, (unsigned long) hw.features,
+               server_version_info_list[i]);
+       
+        AJI_CHAIN_ID chain_id = hw.chain_id;
+        aji_lock_chain(chain_id, timeout);
+       
+        DWORD device_count = hardware_capacity;
+        AJI_DEVICE *device_list = (AJI_DEVICE*) calloc(device_count, sizeof(AJI_DEVICE));
+        aji_read_device_chain(chain_id, &device_count, device_list, 1);
+        printf("        Number of devices on chain is %lu\n", (unsigned long) device_count);
+            
+        for(DWORD tap_position=0; tap_position<device_count; ++tap_position) {
+            AJI_DEVICE device = device_list[tap_position];
+            printf("        (A%lu) device_id=%08lX, instruction_length=%d, features=%lu, device_name=%s", 
+                   (unsigned long) tap_position+1, (unsigned long) device.device_id, device.instruction_length,
+                   (unsigned long) device.features, device.device_name
+            );
+                        
+               
+            DWORD hier_id_n = hardware_capacity; 
+            AJI_HIER_ID *hier_ids = (AJI_HIER_ID*) calloc(hier_id_n, sizeof(AJI_HIER_ID));
+            AJI_HUB_INFO *hub_infos = (AJI_HUB_INFO*) calloc(AJI_MAX_HIERARCHICAL_HUB_DEPTH, sizeof(AJI_HUB_INFO));
+
+           aji_get_nodes(chain_id, tap_position, hier_ids, &hier_id_n, hub_infos);
+           printf("            Number of SLD nodes (hier_id_n)=%lu,\n", (unsigned long) hier_id_n); 
+           for(DWORD k=0; k<hier_id_n; ++k) {
+               printf("            (B%lu) ", k);
+               jtagservice_sld_node_printf(&(hier_ids[k]), &(hub_infos[k]));
+               printf("\n");
+           } //end for k (hier_id_n)
+
+           //Note: SOCVHPS is 0x0x4BA00477 and is a ARM core
+           int claim_size = 2; 
+           AJI_CLAIM claims[] = {
+              { AJI_CLAIM_IR_SHARED, device.device_id == 0x4BA00477 ? 0b1110u : 0b0000000110u }, //IDCODE register
+              { AJI_CLAIM_IR_SHARED, device.device_id == 0x4BA00477 ? 0b1111u : 0b1111111111u }, //BYPASS instruction
+           };
+           char appname[] = "MyApp";
+           AJI_OPEN_ID open_id = NULL;                   
+           aji_open_device(chain_id, tap_position, &open_id, claims, claim_size, appname);
+
+           aji_unlock_chain_lock(chain_id, open_id, 10000); 
+           aji_test_logic_reset(open_id);  
+         
+           QWORD ir_idcode = device.device_id == 0x4BA00477 ? 0b1110 : 0b0000000110;
+           DWORD captured_ir = 0xFFFF;      
+           c_aji_access_ir(open_id, ir_idcode,  &captured_ir, 0);
+                
+           DWORD length_dr = 32,
+                 flags = 0,
+                 write_offset = 0,
+                 write_length = 0,,
+                 read_offset = 0,
+                 read_length = 32;
+
+           BYTE  write_bits[] = { 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55, 0x55 };
+           BYTE  read_bits[]  = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+
+           aji_access_dr( open_id, length_dr, flags, write_offset, write_length, write_bits,  read_offset, read_length, read_bits  );
+           printf("                 Return DR buffer reads %02X%02X%02X%02X %02X%02X%02X%02X\n", 
+                  read_bits[3], read_bits[2], read_bits[1], read_bits[0], 
+                  read_bits[7], read_bits[6], read_bits[5], read_bits[4]
+           );
+         
+           aji_unlock_lock_chain(open_id, chain_id);
+           aji_close_device(open_id);
+        
+           free(hier_ids);
+           free(hub_infos);
+        } // end for tap_position (device_count)
+                 
+        free(device_list);
+        aji_unlock_chain(chain_id);
+    } //end for i (hardware List)
+    free(hardware_list);     
+    }
+} //end main()
+
+void sld_node_printf(const AJI_HIER_ID* hier_id, const AJI_HUB_INFO* hub_infos) {
+    printf(" idcode=%08lX position_n=%lu position: ( ",
+        (unsigned long) hier_id->idcode,
+        (unsigned long) hier_id->position_n
+    );
+    if (hub_infos) {
+        for (int m = 0; m <= hier_id->position_n; ++m) {
+            printf("%d ", hier_id->positions[m]);
+        } //end for m
+        printf(")  hub_infos: ");
+        for (int m = 0; m <= hier_id->position_n; ++m) {
+            printf(" (Hub %d) bridge_idcode=%08lX, hub_id_code=%08lX", 
+                m, 
+                m == 0 ? 0 : (hub_infos->bridge_idcode[m]), 
+                (hub_infos->hub_idcode[m])
+            );
+        } //end for m (bridge)
+    }
+}
+```

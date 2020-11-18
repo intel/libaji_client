@@ -1,0 +1,82 @@
+check_PROGRAMS = %D%/safestringtest
+
+
+%C%_safestringtest_SOURCES = 
+%C%_safestringtest_CPPFLAGS =
+%C%_safestringtest_LDFLAGS = 
+%C%_safestringtest_LDLIBS =
+
+%C%_safestringtest_CPPFLAGS += -I$(IDIR) -fstack-protector-strong -fPIE -fPIC -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security
+%C%_safestringtest_LDFLAGS +=-z noexecstack -z relo -z now
+
+
+%C%_safestringtest_SOURCES += \
+    %D%/Safe_String_UnitTestMain.c \
+    %D%/test_strcmp_s.c \
+    %D%/test_strnlen_s.c \
+    %D%/test_memcmp16_s.c \
+    %D%/test_strcpyfldin_s.c \
+    %D%/test_strnterminate_s.c \
+    %D%/test_memcmp32_s.c \
+    %D%/test_strcpyfldout_s.c \
+    %D%/test_strpbrk_s.c \
+    %D%/test_memcmp_s.c test_strcpyfld_s.c \
+    %D%/test_strprefix_s.c \
+    %D%/test_memcpy16_s.c \
+    %D%/test_strcpy_s.c \
+    %D%/test_strremovews_s.c \
+    %D%/test_memcpy32_s.c \
+    %D%/test_strcspn_s.c \
+    %D%/test_strspn_s.c \
+    %D%/test_memcpy_s.c \
+    %D%/test_strfirstchar_s.c \
+    %D%/test_strstr_s.c \
+    %D%/test_memmove16_s.c \
+    %D%/test_strfirstdiff_s.c \
+    %D%/test_strtok_s.c \
+    %D%/test_memmove32_s.c \
+    %D%/test_strfirstsame_s.c \
+    %D%/test_strtolowercase_s.c \
+    %D%/test_memmove_s.c \
+    %D%/test_strisalphanumeric_s.c \
+    %D%/test_strtouppercase_s.c \
+    %D%/test_memset16_s.c \
+    %D%/test_strisascii_s.c \
+    %D%/test_strzero_s.c \
+    %D%/test_memset32_s.c \
+    %D%/test_strisdigit_s.c \
+    %D%/test_wcpcpy_s.c \
+    %D%/test_memset_s.c \
+    %D%/test_strishex_s.c \
+    %D%/test_wcscat_s.c \
+    %D%/test_memzero16_s.c \
+    %D%/test_strislowercase_s.c \
+    %D%/test_wcscpy_s.c \
+    %D%/test_memzero32_s.c \
+    %D%/test_strismixed_s.c \
+    %D%/test_wcsncat_s.c \
+    %D%/test_memzero_s.c \
+    %D%/test_strispassword_s.c \
+    %D%/test_wcsncpy_s.c \
+    %D%/test_strisuppercase_s.c \
+    %D%/test_wcsnlen_s.c \
+    %D%/test_stpcpy_s.c \
+    %D%/test_strlastchar_s.c \
+    %D%/test_wmemcmp_s.c \
+    %D%/test_stpncpy_s.c \
+    %D%/test_strlastdiff_s.c \
+    %D%/test_wmemcpy_s.c \
+    %D%/test_strcasecmp_s.c \
+    %D%/test_strlastsame_s.c \
+    %D%/test_wmemmove_s.c \
+    %D%/test_strcasestr_s.c \
+    %D%/test_strljustify_s.c \
+    %D%/test_wmemset_s.c \
+    %D%/test_strcat_s.c \
+    %D%/test_strncat_s.c \
+    %D%/test_strcmpfld_s.c \
+    test_strncpy_s.c \
+    %D%/../safeclib/libsafestring.la
+
+
+

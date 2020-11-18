@@ -1,0 +1,98 @@
+lib_LTLIBRARIES = %D%/libSafeString.la
+
+%C%_libSafeString_la_SOURCES = 
+%C%_libSafeString_la_CPPFLAGS =
+%C%_libSafeString_la_LDFLAGS = 
+%C%_libSafeString_la_LDLIBS =
+
+IDIR=%D%/../include
+
+%C%_libSafeString_la_CPPFLAGS += -I$(IDIR) -fstack-protector-strong -fPIE -fPIC -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security
+%C%_libSafeString_la_LDFLAGS +=-z noexecstack -z relo -z now
+
+
+%C%_libSafeString_la_SOURCES += \
+    %D%/../include/safe_lib_errno.h \
+    %D%/../include/safe_lib.h \
+    %D%/../include/safe_str_lib.h \
+    %D%/../include/safe_types.h.in \
+    %D%/../include/safe_lib_errno.h.in \
+    %D%/../include/safe_mem_lib.h  \
+    %D%/../include/safe_types.h \
+    %D%/mem_primitives_lib.h  \
+    %D%/safeclib_private.h \
+    %D%/safe_mem_constraint.h  \
+    %D%/safe_str_constraint.h \
+    %D%/abort_handler_s.c \
+    %D%/stpcpy_s.c \
+    %D%/strlastsame_s.c \
+    %D%/ignore_handler_s.c \
+    %D%/stpncpy_s.c \
+    %D%/strljustify_s.c \
+    %D%/memcmp16_s.c \
+    %D%/strcasecmp_s.c \
+    %D%/strncat_s.c \
+    %D%/memcmp32_s.c \
+    %D%/strcasestr_s.c \
+    %D%/strncpy_s.c \
+    %D%/memcmp_s.c \
+    %D%/strcat_s.c \
+    %D%/strnlen_s.c \
+    %D%/memcpy16_s.c \
+    %D%/strcmpfld_s.c \
+    %D%/strnterminate_s.c \
+    %D%/memcpy32_s.c \
+    %D%/strcmp_s.c \
+    %D%/strpbrk_s.c \
+    %D%/memcpy_s.c \
+    %D%/strcpyfldin_s.c \
+    %D%/strprefix_s.c \
+    %D%/memmove16_s.c \
+    %D%/strcpyfldout_s.c \
+    %D%/strremovews_s.c \
+    %D%/memmove32_s.c \
+    %D%/strcpyfld_s.c \
+    %D%/strspn_s.c \
+    %D%/memmove_s.c \
+    %D%/strcpy_s.c \
+    %D%/strstr_s.c \
+    %D%/mem_primitives_lib.c \
+    %D%/strcspn_s.c \
+    %D%/strtok_s.c \
+    %D%/strfirstchar_s.c \
+    %D%/strtolowercase_s.c \
+    %D%/memset16_s.c \
+    %D%/strfirstdiff_s.c \
+    %D%/strtouppercase_s.c \
+    %D%/memset32_s.c \
+    %D%/strfirstsame_s.c \
+    %D%/strzero_s.c \
+    %D%/memset_s.c \
+    %D%/strisalphanumeric_s.c \
+    %D%/wcpcpy_s.c \
+    %D%/memzero16_s.c \
+    %D%/strisascii_s.c \
+    %D%/wcscat_s.c \
+    %D%/memzero32_s.c \
+    %D%/strisdigit_s.c \
+    %D%/wcscpy_s.c \
+    %D%/memzero_s.c \
+    %D%/strishex_s.c \
+    %D%/wcsncat_s.c \
+    %D%/strislowercase_s.c \
+    %D%/wcsncpy_s.c \
+    %D%/safe_mem_constraint.c \
+    %D%/strismixedcase_s.c \
+    %D%/wcsnlen_s.c \
+    %D%/strispassword_s.c \
+    %D%/wmemcmp_s.c \
+    %D%/safe_str_constraint.c \
+    %D%/strisuppercase_s.c \
+    %D%/wmemcpy_s.c \
+    %D%/strlastchar_s.c \
+    %D%/wmemmove_s.c \
+    %D%/snprintf_support.c \
+    %D%/strlastdiff_s.c \
+    %D%/wmemset_s.c
+
+

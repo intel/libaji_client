@@ -1,0 +1,39 @@
+#! /bin/bash
+PROGRAM="$(basename ${0})"
+PROMPT="${PROGRAM}>"
+
+set -e #stop at error
+
+echo "${PROMPT} Preparing libtoolize ..."
+libtoolize=''
+if which libtoolize >/dev/null; then
+    libtoolize='libtoolize'
+elif which glibtoolize >/dev/null; then
+    libtoolize='glibtoolize'
+else
+    echo '${PROMPT}: ERROR: Cannot find libtoolize or glibtoolize. Aborting'
+    exit 1
+fi
+
+echo "${PROMPT} Preparing submodules ..."
+
+git submodule update --init --recursive
+
+if [[ ! -e 3rdparties/safestringlib/makefile.orig ]]; then
+	mv 3rdparties/safestringlib/makefile 3rdparties/safestringlib/makefile.orig
+fi
+cp store/safestringlib/Makefile.am 3rdparties/safestringlib/Makefile.am
+cp store/safestringlib/Makefile.am.safeclib 3rdparties/safestringlib/safeclib/Makefile.am
+cp store/safestringlib/Makefile.am.unittests 3rdparties/safestringlib/unittests/Makefile.am
+
+
+echo "${PROMPT} Preparing autoconf ..."
+#ACLOCAL_OPTS is env variable to pass option into aclocal
+aclocal  --warnings=all ${ACLOCAL_OPTS}  
+${libtoolize} --automake --copy
+autoheader --warnings=all
+automake --warnings=all --gnu --add-missing --copy
+autoconf --warnings=all
+
+echo "${PROMPT} Bootstrap complete"
+echo "Now run ./configure ..."
