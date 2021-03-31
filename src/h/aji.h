@@ -1261,7 +1261,7 @@ AJI_ERROR AJI_API aji_flush                   (AJI_OPEN_ID          open_id);
  * 
  * \return #AJI_NO_ERROR Success
  * \return #AJI_INVALID_CHAIN_ID Failure. \p chain_id is not valid
- * \return #AJI_CHAIN_LOCKED Failure. \p chain_id is already locked by this client
+ * \return #AJI_LOCKED Failure. \p chain_id is already locked by this client
  * \return #AJI_CHAIN_IN_USE Failure. \p chain_id is locked by another client
  * 
  * \seealso #aji_unlock_chain
