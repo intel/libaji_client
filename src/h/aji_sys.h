@@ -39,7 +39,7 @@
 
 
 /* / COMPILER FLAGS ////////////////////////////////////////////////// */
-/**
+/*
  * libaji_client relies on a collection of compiler flags to be compile
  * Windows/Linux platform. Some of the compiler flags are defined when
  * you invoke the compiler.
@@ -49,47 +49,46 @@
  * understand the compiler options.
  * 
  * COMPILER FLAGS controlling libaji_client compilation:
- * () ALL platform:
- *  LITTLE=1 BIG=2 # options for ENDIAN
- *  WINDOWS=1 UNIX=2 LINUX=3  # options for PORT and SYS
- *  AJI_NO_MEM_MANAGER  # define it for now, will be removed later
+ * - ALL platform:
+ *  - LITTLE=1 BIG=2 : options for ENDIAN
+ *  - WINDOWS=1 UNIX=2 LINUX=3  # options for PORT and SYS
+ *  - AJI_NO_MEM_MANAGER  # define it for now, will be removed later
  *                         # It controls reporting via
  *                         # AJI_INTERNAL_ERROR_WRAPPER
  *                         # Not yet sure the effect of removing it
- * 
- * () For Windows
-    - ENDIAN=LITTLE #assuming x86
-    - PORT=WINDOWS #OS variant
-    - SYS=WINDOWS  #Operating System
- * () For Linux
-    - ENDIAN=LITTLE #assuming x86
-    - PORT=UNIX  #OS variant
-    - SYS=LINUX  #Operating System 
-
- * () Optional:
- * - MOD_64_BIT 
- *        # Define if you are compiling to 64 bit binary. This is to set
+ * - Example
+ *   - For Windows
+ *     - ENDIAN=LITTLE #assuming x86
+ *     - PORT=WINDOWS #OS variant
+ *     - SYS=WINDOWS  #Operating System
+ *   - For Linux
+ *     - ENDIAN=LITTLE #assuming x86
+ *     - PORT=UNIX  #OS variant
+ *     - SYS=LINUX  #Operating System 
+ * - Optional:
+ *   - MOD_64_BIT 
+ *         Define if you are compiling to 64 bit binary. This is to set
  *        # the variable size, e.g. ULONG etc, correctly.
- * - GLIBC_SYMVER_DIRECTIVES 
+ *   - GLIBC_SYMVER_DIRECTIVES 
  *        #Define it To workaround/cure a memcpy issue, \see aji_glibc_sys.h
- * - JTAG_DLLEXPORT=DLLIMPORT | AJI_DLLEXPORT 
+ *   - JTAG_DLLEXPORT=DLLIMPORT|AJI_DLLEXPORT 
  *        # This controls the behaviour of macro AJI_API. 
  *        # If you are using the function decorated by AJI_API from a 
  *        # dynamically-linked library, set to DLLIMPORT. If instead,
  *        # you are building a library containing the decorated function
  *        # you should define to AJI_DLLEXPORT.
- * - STRIP_ASSERTION_TEXT
+ *   - STRIP_ASSERTION_TEXT
  *        # Replace all internal error messages with "Internal Error"
  *        # Don't use it to hide messages from developer, but
  *        # can use it to make message better for users, e.g.
  *        # to not cause panic if source code is shown.
  
- * COMPILER OPTIONS:
- * () -fvisibility=hidden (compulsory)
+ * -  COMPILER OPTIONS:
+ *   - -fvisibility=hidden (compulsory)
  *     # Part of optimization scheme to control visibility of a function. Particularly useful
  *     # when creating library. https://gcc.gnu.org/wiki/Visibility
- * () -D_GLIBCXX_USE_CXX11_ABI=0 (compulsory, g++)
- *     # Not sure why, but we are using old ABI. 
+ *   - -D_GLIBCXX_USE_CXX11_ABI=0 (compulsory, g++)
+ *     Not sure why, but we are using old ABI. 
  *     https://gcc.gnu.org/onlinedocs/libstdc++/manual/using_dual_abi.html
  */
 
