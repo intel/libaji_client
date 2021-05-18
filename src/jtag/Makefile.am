@@ -135,7 +135,9 @@ if BUILD_WINDOWS
         -lcomdlg32 \
         -lshell32 \
         -lws2_32 \
-        -lssp
+        -lssp \
+        -static-libgcc \
+        -static-libstdc++
 
 else
 
