@@ -12,7 +12,6 @@ bin_PROGRAMS = %D%/jtagquery
 %C%_libaji_client_la_LDLIBS =
 %C%_libaji_client_la_LIBADD =
 
-
 %C%_libaji_client_la_CPPFLAGS += -DLITTLE=1 -DBIG=2 -DENDIAN=LITTLE
 %C%_libaji_client_la_CPPFLAGS += -DWINDOWS=1 -DUNIX=2 -DLINUX=3
 
@@ -108,8 +107,12 @@ if BUILD_WINDOWS
 else##
 
 %C%_libaji_client_la_SOURCES += \
-	%D%/jtag_platform_unix.cpp \
-    %D%/../../3rdparties/safestringlib/safeclib/libSafeString.la
+    %D%/jtag_platform_unix.cpp
+#    %D%/../../3rdparties/safestringlib/safeclib/libSafeString.la
+
+%C%_libaji_client_la_LIBADD += \
+%D%/../../3rdparties/safestringlib/safeclib/libSafeString.la
+
 endif
 
 %C%_libaji_client_la_CPPFLAGS +=  \

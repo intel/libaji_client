@@ -5,6 +5,7 @@ check_PROGRAMS = %D%/safestringtest
 %C%_safestringtest_CPPFLAGS =
 %C%_safestringtest_LDFLAGS = 
 %C%_safestringtest_LDLIBS =
+%C%_safestringtest_LDADD =
 
 %C%_safestringtest_CPPFLAGS += -I$(IDIR) -fstack-protector-strong -fPIE -fPIC -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security
 %C%_safestringtest_LDFLAGS +=-z noexecstack -z relo -z now
@@ -78,7 +79,7 @@ check_PROGRAMS = %D%/safestringtest
     %D%/test_strcmpfld_s.c \
     %D%/test_strncpy_s.c
 
-%C%_safestringtest_LDLIBS += %D%/../safeclib/libsafestring.la
+%C%_safestringtest_LDADD += %D%/../safeclib/libsafestring.la
 
 
 
