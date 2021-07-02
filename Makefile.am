@@ -12,10 +12,7 @@ if ! BUILD_WINDOWS
         -I$(abs_top_srcdir)/3rdparties/safestringlib/include
 endif
 
-
-
-BAD_CFLAGS= \
-    -I %D%/p4/quartus/h
-    
 include src/jtag/Makefile.am
+SUBDIRS += src/jtag
+DIST_SUBDIRS += src/jtag
 

@@ -105,15 +105,16 @@ if BUILD_WINDOWS
 %C%_libaji_client_la_LDFLAGS += -no-undefined -avoid-version
 %C%_libaji_client_la_LIBADD += -lws2_32
 
-else
-%C%_libaji_client_la_SOURCES += %D%/jtag_platform_unix.cpp \
-    $(top_builddir)/3rdparties/safestringlib/safeclib/libSafeString.la
+else##
+
+%C%_libaji_client_la_SOURCES += \
+	%D%/jtag_platform_unix.cpp \
+    %D%/../../3rdparties/safestringlib/safeclib/libSafeString.la
 endif
 
 %C%_libaji_client_la_CPPFLAGS +=  \
-    $(BAD_CFLAGS) \
-    $(AM_CPPFLAGS) 
-
+    $(AM_CPPFLAGS) \
+   -I%D%/../../3rdparties/safestringlib/include
 
 if BUILD_WINDOWS
 ##(windows) Compile: Others
@@ -176,9 +177,6 @@ endif
 %C%_jtagquery_LDFLAGS = 
 %C%_jtagquery_LDADD =
 %C%_jtagquery_LDLIBS =
-
-%C%_jtagquery_CPPFLAGS += \
-    $(BAD_CFLAGS)
 
 %C%_jtagquery_CPPFLAGS += \
     $(AM_CPPFLAGS) \

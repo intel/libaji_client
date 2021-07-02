@@ -17,8 +17,9 @@ IDIR=%D%/../include
     %D%/../include/safe_str_lib.h \
     %D%/../include/safe_types.h.in \
     %D%/../include/safe_lib_errno.h.in \
-    %D%/../include/safe_mem_lib.h  \
+    %D%/../include/safe_mem_lib.h \
     %D%/../include/safe_types.h \
+    %D%/../include/snprintf_s.h \
     %D%/mem_primitives_lib.h  \
     %D%/safeclib_private.h \
     %D%/safe_mem_constraint.h  \
