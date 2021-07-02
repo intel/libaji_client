@@ -1,4 +1,4 @@
-AC_INIT([libjtag_client], [0.1.0], [john.doe@nowhere.org])
+AC_INIT([libaji_client], [0.1.0], [cinlyooi@intel.com])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 AM_PROG_AR
 

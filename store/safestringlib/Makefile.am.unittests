@@ -20,7 +20,8 @@ check_PROGRAMS = %D%/safestringtest
     %D%/test_memcmp32_s.c \
     %D%/test_strcpyfldout_s.c \
     %D%/test_strpbrk_s.c \
-    %D%/test_memcmp_s.c test_strcpyfld_s.c \
+    %D%/test_memcmp_s.c \
+    %D%/test_strcpyfld_s.c \
     %D%/test_strprefix_s.c \
     %D%/test_memcpy16_s.c \
     %D%/test_strcpy_s.c \
@@ -75,8 +76,9 @@ check_PROGRAMS = %D%/safestringtest
     %D%/test_strcat_s.c \
     %D%/test_strncat_s.c \
     %D%/test_strcmpfld_s.c \
-    test_strncpy_s.c \
-    %D%/../safeclib/libsafestring.la
+    %D%/test_strncpy_s.c
+
+%C%_safestringtest_LDLIBS += %D%/../safeclib/libsafestring.la
 
 
 

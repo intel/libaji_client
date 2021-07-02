@@ -65,13 +65,13 @@ endif
 
 
 %C%_libaji_client_la_SOURCES += \
-    $(abs_top_srcdir)/src/h/aji_sys.h \
-    $(abs_top_srcdir)/src/h/aji.h \
-    $(abs_top_srcdir)/src/h/aji_glibc_sys.h \
-    $(abs_top_srcdir)/src/h/aji_macros_sys.h \
-    $(abs_top_srcdir)/src/h/gen_string_sys.h  \
-    $(abs_top_srcdir)/src/h/secure_getenv.h \
-    $(abs_top_srcdir)/src/h/win_type_sys.h  \
+    %D%/../h/aji_sys.h \
+    %D%/../h/aji.h \
+    %D%/../h/aji_glibc_sys.h \
+    %D%/../h/aji_macros_sys.h \
+    %D%/../h/gen_string_sys.h  \
+    %D%/../h/secure_getenv.h \
+    %D%/../h/win_type_sys.h  \
     \
     %D%/jtag_client_aji.cpp     %D%/jtag_client_aji.h \
     %D%/jtag_client_link.cpp    %D%/jtag_client_link.h  \
@@ -107,7 +107,7 @@ if BUILD_WINDOWS
 
 else
 %C%_libaji_client_la_SOURCES += %D%/jtag_platform_unix.cpp \
-    $(top_builddir)/3rdparties/safestringlib/safeclib/liSafeString.la
+    $(top_builddir)/3rdparties/safestringlib/safeclib/libSafeString.la
 endif
 
 %C%_libaji_client_la_CPPFLAGS +=  \
