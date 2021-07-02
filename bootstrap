@@ -22,7 +22,7 @@ git submodule update --init --recursive
 if [[ ! -e 3rdparties/safestringlib/makefile.orig ]]; then
 	mv 3rdparties/safestringlib/makefile 3rdparties/safestringlib/makefile.orig
 fi
-cp store/safestringlib/Makefile.am 3rdparties/safestringlib/Makefile.am
+cp store/safestringlib/Makefile.am.safestringlib 3rdparties/safestringlib/Makefile.am
 cp store/safestringlib/Makefile.am.safeclib 3rdparties/safestringlib/safeclib/Makefile.am
 cp store/safestringlib/Makefile.am.unittests 3rdparties/safestringlib/unittests/Makefile.am
 
