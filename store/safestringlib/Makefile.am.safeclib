@@ -1,4 +1,4 @@
-lib_LTLIBRARIES = %D%/libSafeString.la
+noinst_LTLIBRARIES = %D%/libSafeString.la
 
 %C%_libSafeString_la_SOURCES = 
 %C%_libSafeString_la_CPPFLAGS =
