@@ -2,7 +2,7 @@ AC_INIT([libaji_client], [0.2.0], [cinlyooi@intel.com])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 AM_PROG_AR
 
-LT_INIT([win32-dll])
+LT_INIT
 AC_SUBST([LIBTOOL_DEPS])
 
 AC_CONFIG_SRCDIR([src/jtag/jtag_client_aji.cpp])
