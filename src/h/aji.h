@@ -1816,6 +1816,29 @@ AJI_ERROR AJI_API aji_get_nodes               (AJI_CHAIN_ID         chain_id,
                                                DWORD              * hier_id_n,
                                                AJI_HUB_INFO       * hub_infos);
 
+
+/**
+ * Work exactly as the version with out the last integer parameter. This is 
+ * a workaround for an issue discovered with the other function, i.e.,
+ * heir_ids' idcode is not correct for one or more hier_id elements.
+ * This is only observed when the caller is calling from C. The
+ * root cause is unknown.
+ *
+ * To workaround this issue, this function so some memory allocation and
+ * use that in place of hier_ids in internal computation, then copy the
+ * result out to hier_ids.
+ *
+ * \return Everything that its counterpart without last integer can return
+ * \return #AJI_NO_MEMORY Failure. Insufficient memory to do memory allocation
+ *                necessary for this workaround
+ */
+AJI_ERROR AJI_API aji_get_nodes               (AJI_CHAIN_ID         chain_id,
+                                               DWORD                tap_position,
+                                               AJI_HIER_ID        * hier_ids,
+                                               DWORD              * hier_id_n,
+                                               AJI_HUB_INFO       * hub_infos,
+											   int);
+
  
 /**
  * Open a connection to a node on the chain, including hierarchical nodes.  
