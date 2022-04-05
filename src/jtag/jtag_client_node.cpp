@@ -156,6 +156,8 @@ AJI_ERROR AJI_API aji_get_nodes       (AJI_CHAIN_ID         chain_id,
     // Retrieve the total number of nodes discovered
     DWORD n = hub->get_hier_id_n();
 
+AJI_HIER_ID *workspace = (AJI_HIER_ID*) calloc(n, sizeof(AJI_HIER_ID));
+
     if (error == AJI_NO_ERROR)
     {
         // Check the size allocated by caller
@@ -164,14 +166,49 @@ AJI_ERROR AJI_API aji_get_nodes       (AJI_CHAIN_ID         chain_id,
 
         // Fill up the AJI_HIER_ID data structures
         if (error == AJI_NO_ERROR)
-            error = hub->get_hier_ids(0, hier_ids, *hier_id_n, hub_infos);
+            error = hub->get_hier_ids(0, workspace, *hier_id_n, hub_infos);
     }
 
     // Hint the caller on how much buffer was used
     *hier_id_n = n;
 
     hub->put_hub();
+printf(">>>> ************************************ aji_get_nodes built: %s %s\n", __DATE__, __TIME__);
+for(DWORD i=0; i < *hier_id_n; ++i) {
+  printf("workspace[%i]: id_code=0x%08lX position_n=%u, positions=[ ",
+		  i, workspace[i].idcode, workspace[i].position_n
+  );
+  for(DWORD j=0; j<AJI_MAX_HIERARCHICAL_HUB_DEPTH; ++j) {
+	printf("%d ", workspace[i].positions[j]);
+  };
+  printf("]; size=%d, pointers=%p %p [%p %p %p %p %p %p %p %p]\n",
+	sizeof(workspace[i]), &(workspace[i].idcode), &(workspace[i].position_n),
+    workspace[i].positions+0,workspace[i].positions+1,workspace[i].positions+2,
+    workspace[i].positions+3,workspace[i].positions+4,workspace[i].positions+5,
+    workspace[i].positions+6,workspace[i].positions+7
+  );
+}
 
+printf("---\n");
+for(DWORD i=0; i < *hier_id_n; ++i) {
+   hier_ids[i] = workspace[i];
+}
+for(DWORD i=0; i < *hier_id_n; ++i) {
+  printf("hier_id[%i]: id_code=0x%08lX position_n=%u, positions=[ ",
+		  i, hier_ids[i].idcode, hier_ids[i].position_n
+  );
+  for(DWORD j=0; j<AJI_MAX_HIERARCHICAL_HUB_DEPTH; ++j) {
+	printf("%d ", hier_ids[i].positions[j]);
+  };
+  printf("]; size=%d, pointers=%p %p [%p %p %p %p %p %p %p %p]\n",
+	sizeof(hier_ids[i]), &(hier_ids[i].idcode), &(hier_ids[i].position_n),
+    hier_ids[i].positions+0,hier_ids[i].positions+1,hier_ids[i].positions+2,
+    hier_ids[i].positions+3,hier_ids[i].positions+4,hier_ids[i].positions+5,
+    hier_ids[i].positions+6,hier_ids[i].positions+7
+  );
+}
+printf("<<<<************************************ end aji_get_nodes\n");
+free(workspace);
     return error;
 }
 
