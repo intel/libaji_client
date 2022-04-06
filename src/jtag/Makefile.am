@@ -186,6 +186,7 @@ endif
     $(%C%_libaji_client_la_CPPFLAGS)
 
 %C%_jtagquery_LDFLAGS += \
+    -all-static \
     $(%C%_libaji_client_la_LDFLAGS)
 
 
