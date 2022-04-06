@@ -186,7 +186,7 @@ endif
     $(%C%_libaji_client_la_CPPFLAGS)
 
 %C%_jtagquery_LDFLAGS += \
-    -all-static \
+    -static \
     $(%C%_libaji_client_la_LDFLAGS)
 
 
@@ -195,11 +195,10 @@ endif
 if BUILD_WINDOWS
 %C%_jtagquery_SOURCES += \
     %D%/jtag_config_status_win.cpp
-
+%C%_jtagquery_LDFLAGS += \
+    -all-static 
 else
-
 %C%_jtagquery_LDADD += $(top_builddir)/3rdparties/safestringlib/safeclib/libSafeString.la
-
 endif
 
 %C%_jtagquery_SOURCES += \
