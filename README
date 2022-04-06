@@ -142,3 +142,15 @@ void sld_node_printf(const AJI_HIER_ID* hier_id, const AJI_HUB_INFO* hub_infos) 
     }
 }
 ```
+
+==========
+CHANGE LOG
+==========
+ - 0.3.0
+    - Introduced aji_get_nodes_bi(...) which is a
+      workaround for aji_get_nodes_b(...) for C
+      program. It was noted that when as the 
+      number of SLD nodes increases, hier_ids' 
+      elements might not contain the correct idcode
+      when the function is called from a C program.
+      the "bi" version workaround this problem.
