@@ -182,6 +182,7 @@ AJI_ERROR AJI_API aji_get_nodes       (AJI_CHAIN_ID         chain_id,
                                        AJI_HUB_INFO       * hub_infos,
                                        int)
 {
+printf("%s:%d\n", __FILE__, __LINE__);
     if (hier_ids == NULL || hier_id_n == NULL)
         return AJI_INVALID_PARAMETER;
 
@@ -192,6 +193,7 @@ AJI_ERROR AJI_API aji_get_nodes       (AJI_CHAIN_ID         chain_id,
     // Retrieve the total number of nodes discovered
     DWORD n = hub->get_hier_id_n();
 
+printf("%s:%d\n", __FILE__, __LINE__);
 
     if (error == AJI_NO_ERROR)
     {
@@ -208,17 +210,21 @@ AJI_ERROR AJI_API aji_get_nodes       (AJI_CHAIN_ID         chain_id,
 		}
 	
         for(DWORD i=0; i < n; ++i) {
+printf("%s:%d i=%ld (<%ld)\n", __FILE__, __LINE__, i, n);
+
            hier_ids[i] = workspace[i];
         }
 
         free(workspace);
     }
 
+printf("%s:%d\n", __FILE__, __LINE__);
     // Hint the caller on how much buffer was used
     *hier_id_n = n;
 
+printf("%s:%d\n", __FILE__, __LINE__);
     hub->put_hub();
-
+printf("%s:%d\n", __FILE__, __LINE__);
     return error;
 }
 

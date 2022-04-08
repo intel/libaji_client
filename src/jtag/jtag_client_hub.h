@@ -81,8 +81,8 @@ public:
 
     AJI_ERROR read_hub_information(bool scan_hier_hub, DWORD parent_levels_select_bits = 0, QWORD parent_levels_select = 0);
 
-    void put_hub(void) { if (--m_use_count == 0) delete this; }
-
+    void put_hub(void) { printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX m_use_count=%ld\n", m_use_count); if (--m_use_count == 0) delete this; }
+    
     const DWORD * get_idcodes(void) const { return m_idcodes; }
     DWORD get_idcode_n(void) const { return m_idcode_n; }
 
@@ -120,6 +120,8 @@ private:
     static DWORD ceil_log2(DWORD data);
     static void memset64(BYTE * dest, QWORD value);
 
+    AJI_OPEN_ID m_hub_id;
+
     AJI_CLAIM2 m_claims[4];
 
     AJI_CHAIN_ID m_chain;
@@ -128,7 +130,6 @@ private:
 
     DWORD     m_use_count;
 
-    AJI_OPEN_ID m_hub_id;
     DWORD * m_idcodes;
     DWORD   m_idcode_n;
 
