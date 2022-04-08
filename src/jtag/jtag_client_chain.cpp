@@ -1318,20 +1318,14 @@ AJI_ERROR AJI_CHAIN_JS::open_device (DWORD                tap_position,
 
     if (!valid() || m_chain_id == 0)
         return AJI_INVALID_CHAIN_ID;
-printf("*****************A tap_position=%ld, claims_n=%ld\n", tap_position, claim_n);
+
     if (open_id == NULL ||
         (claim_n > 0 && claims == NULL))
         return AJI_INVALID_PARAMETER;
-printf("*****************B\n");
 
     // Are all the claim length valid?
     for (i = 0 ; i < claim_n ; i++)
     {
-printf("*****************C  claim: i=%ld type=%d value=%lld length=%ld : %p [%p] (%p %p %p)\n", 
-       i, claims[i].type, claims[i].value, claims[i].length,
-      claims, &(claims[i]), &(claims[i].type), &(claims[i].value), &(claims[i].length)
-);
-
         if (claims[i].length > 64)
             return AJI_INVALID_PARAMETER;
 
@@ -1339,12 +1333,10 @@ printf("*****************C  claim: i=%ld type=%d value=%lld length=%ld : %p [%p]
             claims[i].type != AJI_CLAIM_OVERLAY &&
             claims[i].type != AJI_CLAIM_OVERLAY_SHARED &&
             claims[i].type != AJI_CLAIM_OVERLAY_WEAK) {
-printf("*****************C1 ERROR %d != %d | %d | %d\n", claims[i].type, AJI_CLAIM_OVERLAY, AJI_CLAIM_OVERLAY_SHARED, AJI_CLAIM_OVERLAY_WEAK);
-
             return AJI_INVALID_PARAMETER;
         }
     }
-printf("*****************D\n");
+
     bool version10 = m_client->version_ok(10, 0xFFFF);
 
     // Are all the claim types valid?  Is the user using overlay chains?
@@ -1375,11 +1367,8 @@ printf("*****************D\n");
             break;
 
         default:
- printf("*****************E ERROR unknown type %d for claim %ld\n", claims[i].type, i);
-
             return AJI_INVALID_PARAMETER;
         }
-printf("*****************E out\n");
 
     if (!m_locked)
         return AJI_NOT_LOCKED;
@@ -1398,7 +1387,6 @@ printf("*****************E out\n");
     // If the instruction length is more than 31 then we won't be able to store
     // information about claims correctly, so don't let the user open the device
     if (device.instruction_length > 31) {
-        printf("*****************F ERROR bad instruction length %d (>31)\n", device.instruction_length);
         return AJI_INVALID_PARAMETER;
     }
     // Overlays work differently with version 0 and 1 servers.  Don't try and
@@ -1406,7 +1394,6 @@ printf("*****************E out\n");
     bool version2 = m_client->version_ok(2, 0xFFFF);
     if (need_version2 && !version2)
         return AJI_UNIMPLEMENTED;
-printf("*****************F a\n");
 
     AJI_CLAIM2 *new_claims = NULL;
     bool needs_dummy_bit_calc = false;
@@ -1445,7 +1432,6 @@ printf("*****************F a\n");
             claim_count += new_claim_n;
         }
     }
-printf("*****************G\n");
 
     AJI_OPEN_JS * open = new AJI_OPEN_JS(this, m_client, AJI_OPEN_JS::INDIVIDUAL, tap_position, device, claims, claim_n);
     if (open == NULL)
@@ -1501,7 +1487,6 @@ printf("*****************G\n");
         for (i = 0 ; i < claim_n ; i++)
             tx->add_int(static_cast<DWORD>(claims[i].value));
     }
-printf("*****************H\n");
 
     tx->add_string(application_name);
 
@@ -1520,7 +1505,6 @@ printf("*****************H\n");
         m_client->disconnect();
         error = AJI_SERVER_ERROR;
     }
-printf("*****************I\n");
 
     if (error == AJI_NO_ERROR)
     {
@@ -1550,11 +1534,9 @@ printf("*****************I\n");
     }
     else
         delete open;
-printf("*****************J\n");
 
     delete[] new_claims;
 
-printf("*****************K end\n");
     return error;
 }
 

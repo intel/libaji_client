@@ -138,17 +138,18 @@ AJI_HUB::~AJI_HUB(void)
 //END_FUNCTION_HEADER////////////////////////////////////////////////////////
 {
     // TODO: remove from set of currently in use hubs
-printf("%s:%d\n", __FILE__, __LINE__);
     // Release child hubs
     for (std::map<DWORD, AJI_HUB *>::iterator iter = m_child_hubs.begin(); iter != m_child_hubs.end(); ++iter)
         delete (*iter).second;
-printf("%s:%d %p\n", __FILE__, __LINE__, m_hub_id);
+printf("***********A");
     if (m_hub_id != NULL) {
-printf("%s:%d\n", __FILE__, __LINE__);
-        m_hub_id->close_device();
-//        m_hub_id = nullptr;
+printf("***********A in");
+       m_hub_id->close_device();
+printf("***********A in kill");
+        m_hub_id = nullptr;
     }
-printf("%s:%d\n", __FILE__, __LINE__);
+printf("***********A end");
+
     delete[] m_idcodes;
 }
 

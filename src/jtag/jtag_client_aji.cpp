@@ -387,7 +387,6 @@ AJI_ERROR AJI_API aji_open_device             (AJI_CHAIN_ID         chain_id,
                                                const char         * application_name)
 {
     AJI_CLAIM2 * claims2 = AJI_OPEN::create_claims(claims, claim_n);
-printf("*****WHY DID YOU CALL ME??\n");
     AJI_ERROR result = chain_id->open_device(tap_position, open_id, claims2, claim_n, application_name);
     delete[] claims2;
 

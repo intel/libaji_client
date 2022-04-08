@@ -182,7 +182,6 @@ AJI_ERROR AJI_API aji_get_nodes       (AJI_CHAIN_ID         chain_id,
                                        AJI_HUB_INFO       * hub_infos,
                                        int)
 {
-printf("%s:%d\n", __FILE__, __LINE__);
     if (hier_ids == NULL || hier_id_n == NULL)
         return AJI_INVALID_PARAMETER;
 
@@ -192,8 +191,6 @@ printf("%s:%d\n", __FILE__, __LINE__);
 
     // Retrieve the total number of nodes discovered
     DWORD n = hub->get_hier_id_n();
-
-printf("%s:%d\n", __FILE__, __LINE__);
 
     if (error == AJI_NO_ERROR)
     {
@@ -210,21 +207,26 @@ printf("%s:%d\n", __FILE__, __LINE__);
 		}
 	
         for(DWORD i=0; i < n; ++i) {
-printf("%s:%d i=%ld (<%ld)\n", __FILE__, __LINE__, i, n);
-
            hier_ids[i] = workspace[i];
         }
 
         free(workspace);
     }
 
-printf("%s:%d\n", __FILE__, __LINE__);
     // Hint the caller on how much buffer was used
     *hier_id_n = n;
 
-printf("%s:%d\n", __FILE__, __LINE__);
-    hub->put_hub();
-printf("%s:%d\n", __FILE__, __LINE__);
+    // //TODO: "hub->put_hub();"  was disabled because we have a JTAG_MUTEX that 
+    // //  will occassionally cause segfault
+    // //   -> here : hub->put_hub()
+    // //   -> AJI_HUB put_hub(void) : delete this;
+    // //   -> AJI_HUB::~AJI_HUB(): m_hub_id->close_device()
+    // //   -> AJI_OPEN_JS::close_device():  m_client->link_is_claimed();
+    // //   -> AJI_CLIENT link_is_claimed(void): m_link_mutex.is_claimed() 
+    // //   m_link_mutex causes the segmentation fault as there is no
+    // //   sign that AJI_MUTEX is_claimed() was called.
+    //hub->put_hub();
+
     return error;
 }
 

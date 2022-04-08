@@ -182,7 +182,10 @@ public:
 
     inline bool try_claim_link(DWORD ms_timeout);
     inline void release_link(void);
-    inline bool link_is_claimed(void) { return m_link_mutex.is_claimed(); }
+    inline bool link_is_claimed(void) {
+printf("%s:%d m_link_mutex=%p\n", __FILE__, __LINE__, &m_link_mutex);
+        return m_link_mutex.is_claimed();
+    }
 
     inline AJI_ERROR send_receive(void);
 

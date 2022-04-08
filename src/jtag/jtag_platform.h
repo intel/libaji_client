@@ -100,7 +100,7 @@ public:
 
     void release(void);
 
-    bool is_claimed(void) const { return m_threadid == GetCurrentThreadId(); }
+    bool is_claimed(void) const { printf("%s:%d: m_threadid=%ld\n", __FILE__, __LINE__, m_threadid);  return m_threadid == GetCurrentThreadId(); }
 
 private:
     HANDLE m_mutex;
@@ -109,12 +109,14 @@ private:
 
 inline JTAG_MUTEX::JTAG_MUTEX(void)
 {
+printf("%s:%d created jtag mutex %p\n", __FILE__, __LINE__, this);
     m_mutex = CreateMutex(NULL, FALSE, NULL);
     m_threadid = 0;
 }
 
 inline JTAG_MUTEX::~JTAG_MUTEX(void)
 {
+printf("%s:%d: deleted jtag mutex %p\n", __FILE__, __LINE__, this);
     if (m_mutex != NULL)
         CloseHandle(m_mutex);
 }
@@ -237,7 +239,7 @@ public:
 
     void release(void);
 
-    bool is_claimed(void) const { return m_threadid == pthread_self(); }
+    bool is_claimed(void) const { printf("%s:%d\n", __FILE__, __LINE__); return m_threadid == pthread_self(); }
 
 private:
     pthread_mutex_t m_mutex;
