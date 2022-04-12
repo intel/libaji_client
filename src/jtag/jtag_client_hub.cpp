@@ -141,14 +141,9 @@ AJI_HUB::~AJI_HUB(void)
     // Release child hubs
     for (std::map<DWORD, AJI_HUB *>::iterator iter = m_child_hubs.begin(); iter != m_child_hubs.end(); ++iter)
         delete (*iter).second;
-printf("***********A");
     if (m_hub_id != NULL) {
-printf("***********A in");
        m_hub_id->close_device();
-printf("***********A in kill");
-        m_hub_id = nullptr;
     }
-printf("***********A end");
 
     delete[] m_idcodes;
 }

@@ -626,37 +626,35 @@ AJI_ERROR AJI_OPEN_JS::close_device(void)
 //END_FUNCTION_HEADER//////////////////////////////////////////////////////////
 {
     AJI_ERROR error = AJI_NO_ERROR;
-printf("%s:%d\n", __FILE__, __LINE__);
+
     if (m_defer_error != AJI_NO_ERROR)
         error = pending_error();
 
     if (error == AJI_NO_ERROR && m_locked)
         error = AJI_LOCKED;
-printf("%s:%d: m_client=%p\n", __FILE__, __LINE__, m_client);
+
     if (m_client != NULL)
     {
         // We might have a lock on the link at this point.  If so then we must
         // not attempt to re-acquire it.
-printf("%s:%d: m_client=%p\n", __FILE__, __LINE__, m_client);
         bool have_link = m_client->link_is_claimed();
-printf("%s:%d\n", __FILE__, __LINE__);
+
         if (have_link || m_client->try_claim_link(20000))
         {
             AJI_ERROR new_error = AJI_NO_ERROR;
 
             bool defer(false);
             TXMESSAGE * tx = get_txmessage(defer, new_error, 0, 0);
-printf("%s:%d\n", __FILE__, __LINE__);
+
             if (tx != NULL)
             {
-printf("%s:%d\n", __FILE__, __LINE__);
                 // If there are commands packed before this one then flush them
                 if (tx->get_length() > 0)
                 {
                     new_error = send_receive(NULL, ~0u);
                     tx = get_txmessage(defer, new_error, 0, 0);
                 }
-printf("%s:%d\n", __FILE__, __LINE__);
+
                 if (tx != NULL)
                 {
                     start_command(tx, MESSAGE::CLOSE_DEVICE, 8);
@@ -666,20 +664,18 @@ printf("%s:%d\n", __FILE__, __LINE__);
                     new_error = send_receive(&rx);
                 }
             }
-printf("%s:%d\n", __FILE__, __LINE__);
+
             if (error == AJI_NO_ERROR)
                 error = new_error;
-printf("%s:%d\n", __FILE__, __LINE__);
+
             if (!have_link)
                 m_client->release_link();
-printf("%s:%d\n", __FILE__, __LINE__);
         }
         else {
-printf("%s:%d\n", __FILE__, __LINE__);
             error = AJI_SERVER_ACTIVE;
         }
     }
-printf("%s:%d\n", __FILE__, __LINE__);
+
     delete this;
 
     return error;

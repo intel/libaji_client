@@ -225,7 +225,7 @@ AJI_ERROR AJI_API aji_get_nodes       (AJI_CHAIN_ID         chain_id,
     // //   -> AJI_CLIENT link_is_claimed(void): m_link_mutex.is_claimed() 
     // //   m_link_mutex causes the segmentation fault as there is no
     // //   sign that AJI_MUTEX is_claimed() was called.
-    //hub->put_hub();
+    hub->put_hub();
 
     return error;
 }
