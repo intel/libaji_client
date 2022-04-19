@@ -111,8 +111,8 @@ AJI_HUB::AJI_HUB
 //
 //
 //END_FUNCTION_HEADER////////////////////////////////////////////////////////
-    : m_hub_id(NULL), m_chain(chain), m_tap_position(tap_position),
-      m_use_count(1), m_idcodes(NULL), m_idcode_n(0),
+    : m_chain(chain), m_tap_position(tap_position),
+      m_use_count(1), m_hub_id(NULL), m_idcodes(NULL), m_idcode_n(0),
       m_parent_hub(parent_hub), m_hub_idcode(0), m_sel_bits(0)
 {
     // Claim the PROGRAM instruction to prevent the Quartus programmer from
@@ -138,12 +138,13 @@ AJI_HUB::~AJI_HUB(void)
 //END_FUNCTION_HEADER////////////////////////////////////////////////////////
 {
     // TODO: remove from set of currently in use hubs
+
     // Release child hubs
     for (std::map<DWORD, AJI_HUB *>::iterator iter = m_child_hubs.begin(); iter != m_child_hubs.end(); ++iter)
         delete (*iter).second;
-    if (m_hub_id != NULL) {
-       m_hub_id->close_device();
-    }
+
+    if (m_hub_id != NULL)
+        m_hub_id->close_device();
 
     delete[] m_idcodes;
 }
