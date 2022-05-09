@@ -671,8 +671,9 @@ AJI_ERROR AJI_OPEN_JS::close_device(void)
             if (!have_link)
                 m_client->release_link();
         }
-        else
+        else {
             error = AJI_SERVER_ACTIVE;
+        }
     }
 
     delete this;

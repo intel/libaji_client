@@ -192,7 +192,6 @@ AJI_ERROR AJI_API aji_get_nodes       (AJI_CHAIN_ID         chain_id,
     // Retrieve the total number of nodes discovered
     DWORD n = hub->get_hier_id_n();
 
-
     if (error == AJI_NO_ERROR)
     {
         // Check the size allocated by caller
@@ -217,6 +216,15 @@ AJI_ERROR AJI_API aji_get_nodes       (AJI_CHAIN_ID         chain_id,
     // Hint the caller on how much buffer was used
     *hier_id_n = n;
 
+    // //TODO: "hub->put_hub();"  was disabled because we have a JTAG_MUTEX that 
+    // //  will occassionally cause segfault
+    // //   -> here : hub->put_hub()
+    // //   -> AJI_HUB put_hub(void) : delete this;
+    // //   -> AJI_HUB::~AJI_HUB(): m_hub_id->close_device()
+    // //   -> AJI_OPEN_JS::close_device():  m_client->link_is_claimed();
+    // //   -> AJI_CLIENT link_is_claimed(void): m_link_mutex.is_claimed() 
+    // //   m_link_mutex causes the segmentation fault as there is no
+    // //   sign that AJI_MUTEX is_claimed() was called.
     hub->put_hub();
 
     return error;

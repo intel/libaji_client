@@ -1330,10 +1330,11 @@ AJI_ERROR AJI_CHAIN_JS::open_device (DWORD                tap_position,
             return AJI_INVALID_PARAMETER;
 
         if (claims[i].length > 0 &&
-                claims[i].type != AJI_CLAIM_OVERLAY &&
-                claims[i].type != AJI_CLAIM_OVERLAY_SHARED &&
-                claims[i].type != AJI_CLAIM_OVERLAY_WEAK)
+            claims[i].type != AJI_CLAIM_OVERLAY &&
+            claims[i].type != AJI_CLAIM_OVERLAY_SHARED &&
+            claims[i].type != AJI_CLAIM_OVERLAY_WEAK) {
             return AJI_INVALID_PARAMETER;
+        }
     }
 
     bool version10 = m_client->version_ok(10, 0xFFFF);
@@ -1385,9 +1386,9 @@ AJI_ERROR AJI_CHAIN_JS::open_device (DWORD                tap_position,
 
     // If the instruction length is more than 31 then we won't be able to store
     // information about claims correctly, so don't let the user open the device
-    if (device.instruction_length > 31)
+    if (device.instruction_length > 31) {
         return AJI_INVALID_PARAMETER;
-
+    }
     // Overlays work differently with version 0 and 1 servers.  Don't try and
     // be compatible with older servers.
     bool version2 = m_client->version_ok(2, 0xFFFF);
@@ -1535,6 +1536,7 @@ AJI_ERROR AJI_CHAIN_JS::open_device (DWORD                tap_position,
         delete open;
 
     delete[] new_claims;
+
     return error;
 }
 
