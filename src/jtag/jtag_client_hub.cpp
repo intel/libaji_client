@@ -140,11 +140,13 @@ AJI_HUB::~AJI_HUB(void)
     // TODO: remove from set of currently in use hubs
 
     // Release child hubs
-    for (std::map<DWORD, AJI_HUB *>::iterator iter = m_child_hubs.begin(); iter != m_child_hubs.end(); ++iter)
+    for (std::map<DWORD, AJI_HUB *>::iterator iter = m_child_hubs.begin(); iter != m_child_hubs.end(); ++iter) {
         delete (*iter).second;
+    }
 
-    if (m_hub_id != NULL)
+    if (m_hub_id != NULL) {
         m_hub_id->close_device();
+    }
 
     delete[] m_idcodes;
 }
@@ -374,8 +376,9 @@ AJI_ERROR AJI_HUB::get_hier_ids(BYTE hierarchy, AJI_HIER_ID * hier_ids, DWORD hi
         if (hub_infos != NULL)
         {
             // Top level nodes do not have a bridge, just assign 0
-            if (get_parent_hub() == NULL)
+            if (get_parent_hub() == NULL) {
                 hub_infos[index].bridge_idcode[hierarchy] = 0xff;
+            }
             hub_infos[index].hub_idcode[hierarchy] = m_hub_idcode;
         }
 
@@ -409,8 +412,9 @@ AJI_ERROR AJI_HUB::get_hier_ids(BYTE hierarchy, AJI_HIER_ID * hier_ids, DWORD hi
 
 				if (hub_infos != NULL) {
 					// If not last level of hierarchy
-					if (hierarchy < MAX_HIERARCHIES-1)
+					if (hierarchy < MAX_HIERARCHIES-1) {
 						hub_infos[index].bridge_idcode[hierarchy+1] = m_idcodes[i];
+					}
 					hub_infos[index].hub_idcode[hierarchy] = m_hub_idcode;
 				}
 

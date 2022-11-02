@@ -201,12 +201,14 @@ AJI_ERROR AJI_API aji_get_nodes       (AJI_CHAIN_ID         chain_id,
         AJI_HIER_ID *workspace = (AJI_HIER_ID*) calloc(n, sizeof(AJI_HIER_ID));
         if(workspace == nullptr) { return AJI_NO_MEMORY; }
 
+        DWORD copy_size = (*hier_id_n) < n ? (*hier_id_n) : n;
+
         // Fill up the AJI_HIER_ID data structures
         if (error == AJI_NO_ERROR) {
-            error = hub->get_hier_ids(0, workspace, *hier_id_n, hub_infos);
-		}
-	
-        for(DWORD i=0; i < n; ++i) {
+            error = hub->get_hier_ids(0, workspace, copy_size, hub_infos);
+        }
+
+        for(DWORD i=0; i < copy_size; ++i) {
            hier_ids[i] = workspace[i];
         }
 
@@ -216,15 +218,15 @@ AJI_ERROR AJI_API aji_get_nodes       (AJI_CHAIN_ID         chain_id,
     // Hint the caller on how much buffer was used
     *hier_id_n = n;
 
-    // //TODO: "hub->put_hub();"  was disabled because we have a JTAG_MUTEX that 
-    // //  will occassionally cause segfault
-    // //   -> here : hub->put_hub()
-    // //   -> AJI_HUB put_hub(void) : delete this;
-    // //   -> AJI_HUB::~AJI_HUB(): m_hub_id->close_device()
-    // //   -> AJI_OPEN_JS::close_device():  m_client->link_is_claimed();
-    // //   -> AJI_CLIENT link_is_claimed(void): m_link_mutex.is_claimed() 
-    // //   m_link_mutex causes the segmentation fault as there is no
-    // //   sign that AJI_MUTEX is_claimed() was called.
+    //KNOWN PROBLEM: "hub->put_hub();" We have a JTAG_MUTEX that 
+    //  will occassionally cause segfault
+    //   -> here : hub->put_hub()
+    //   -> AJI_HUB put_hub(void) : delete this;
+    //   -> AJI_HUB::~AJI_HUB(): m_hub_id->close_device()
+    //   -> AJI_OPEN_JS::close_device():  m_client->link_is_claimed();
+    //   -> AJI_CLIENT link_is_claimed(void): m_link_mutex.is_claimed() 
+    //   m_link_mutex causes the segmentation fault as there is no
+    //   sign that AJI_MUTEX is_claimed() was called.
     hub->put_hub();
 
     return error;
