@@ -48,6 +48,16 @@
 #include "config.h"
 #endif
 
+#ifndef INC_CCTYPE
+#include <cctype>
+#define INC_CCTYPE
+#endif
+
+#ifndef INC_MEMORY
+#include <memory>
+#define INC_MEMORY
+#endif
+
 #ifndef INC_AJI_SYS_H
 #include "aji_sys.h"
 #endif
@@ -56,10 +66,6 @@
 #include "gen_string_sys.h"
 #endif
 
-#ifndef INC_CCTYPE
-#include <cctype>
-#define INC_CCTYPE
-#endif
 
 #ifndef INC_AJI_H
 #include "aji.h"
@@ -1633,10 +1639,12 @@ bool AJI_CHAIN_JS::read_blocker_info(RXMESSAGE * rx)
     DWORD i;
     for (i = 0 ; i < other_n ; i++)
     {
-        char buffer[256], sbuffer[256];
+        const size_t size = 256;
+        std::unique_ptr<char[]> buffer(new char[size]);
+        char sbuffer[size];
         BYTE address[16];
 
-        rx->set_string(buffer, sizeof(buffer));
+        rx->set_string(buffer.get(), size);
 
         const char * app_name = NULL;
         if (!rx->remove_string(&app_name))
@@ -1718,6 +1726,7 @@ bool AJI_CHAIN_JS::read_blocker_info(RXMESSAGE * rx)
 
         delete s_error_info;
         s_error_info = error_info;
+        rx->set_string(nullptr, 0);
     }
 
     return true;
