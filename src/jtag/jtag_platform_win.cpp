@@ -251,7 +251,6 @@ bool start_quartus_process(const char * cmnd, int argc, const char * * args, boo
         CloseHandle(pi.hProcess);
         CloseHandle(pi.hThread);
     }
-fprintf(stderr, "OK\n");
     return ok;
 }
 
