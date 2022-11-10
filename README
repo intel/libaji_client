@@ -146,6 +146,12 @@ void sld_node_printf(const AJI_HIER_ID* hier_id, const AJI_HUB_INFO* hub_infos) 
 ==========
 CHANGE LOG
 ==========
+ - 0.4.0
+    - Bugfix: If you have 10 or more SLD nodes, then
+	  previously opencod can segfault as the code
+	  was trying to access memory beyond what was
+	  allocated.
+
  - 0.3.0
     - Introduced aji_get_nodes_bi(...) which is a
       workaround for aji_get_nodes_b(...) for C

@@ -1,4 +1,4 @@
-AC_INIT([libaji_client], [0.3.0], [cinlyooi@intel.com])
+AC_INIT([libaji_client], [0.4.0], [cinlyooi@intel.com])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 AM_PROG_AR
 

@@ -53,7 +53,7 @@
  */
 std::string ver_get_full_version(bool with_sp)
 {
-   return "Version 21.1. Compiled on " __DATE__ " " __TIME__;
+   return "Version 22.4. Compiled on " __DATE__ " " __TIME__;
 }
 
 /*
