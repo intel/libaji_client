@@ -37,3 +37,8 @@ stamp-h1
 
 ## output files
 libaji_client-*
+
+## output from make dist
+**/*.tar.gz
+**/*.tar.bz2
+**/*.tar
